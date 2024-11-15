@@ -12,15 +12,21 @@ def get_order_by_id(order_id: int) -> Order:
 
 
 def process_order(order: Order) -> Order:
-    order_repository.update_order(order)
+    # Start processing the order rounds
     for currentRound in order.rounds:
+        # Take each item from the current round
         for currentItem in currentRound.items:
+            # Check if the stock is available
             stock = get_stock_by_name(currentItem.name)
+            # If the stock is available and the quantity is enough, subtract the stock
             if stock is not None and stock.quantity >= currentItem.quantity:
+                # Subtract the stock
                 subtraction_stock(stock)
             else:
+                # If the stock is not available or the quantity is not enough, set the order status to FAILED
                 order.status = "FAILED"
                 order.details = "Out of stock"
+                # Update the order
                 order_repository.update_order(order)
                 return order
     return order
