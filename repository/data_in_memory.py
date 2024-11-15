@@ -3,8 +3,8 @@ import datetime
 from model.Beer import Beer
 from model.Stock import Stock
 
-# Initial values to start the app
-inventory_in_memory_store = Stock(
+# Initial values to start the app for the first time with some stock inventory
+stock_inventory_in_memory_store = Stock(
     last_updated=datetime.datetime.now(),
     beers=[
         Beer(
@@ -24,3 +24,5 @@ inventory_in_memory_store = Stock(
         )
     ],
 )
+# Initial values to start the app for the first time with clean orders
+orders_in_memory_store = []

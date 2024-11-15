@@ -8,3 +8,11 @@ def subtraction_stock(stock: Stock, stock_to_subtract: Stock) -> Stock:
         if stock_beer is not None:
             stock_beer.quantity -= beer.quantity
     return stock
+
+
+def addition_stock(stock: Stock, stock_to_add: Stock) -> Stock:
+    for beer in stock_to_add.beers:
+        stock_beer = stock_repository.get_stock_by_name(beer.name)
+        if stock_beer is not None:
+            stock_beer.quantity += beer.quantity
+    return stock

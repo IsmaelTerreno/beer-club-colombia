@@ -1,9 +1,9 @@
-from repository.data import inventory_in_memory_store
+from repository.data_in_memory import stock_inventory_in_memory_store
 
 
 class StockRepository:
     def __init__(self):
-        self.inventory = inventory_in_memory_store
+        self.inventory = stock_inventory_in_memory_store
 
     def get_stock(self):
         return self.inventory
