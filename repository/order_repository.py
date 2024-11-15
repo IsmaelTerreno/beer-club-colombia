@@ -19,5 +19,12 @@ class OrderRepository:
                 return order
         return None
 
+    def delete_order(self, order_id):
+        for i in range(len(orders_in_memory_store)):
+            if orders_in_memory_store[i].id == order_id:
+                orders_in_memory_store.pop(i)
+                return True
+        return False
+
 
 order_repository = OrderRepository()

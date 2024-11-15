@@ -16,3 +16,5 @@ class Order(BaseModel):
     discounts: float
     items: List[Item]
     rounds: List[Round]
+    status: str
+    details: str
