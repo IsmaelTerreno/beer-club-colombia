@@ -1,4 +1,7 @@
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+
+from model.Order import Order
 
 app = FastAPI()
 
@@ -8,6 +11,6 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+@app.post("/api/v1/order")
+async def create_order(order: Order):
+    return JSONResponse(content={"message": "Order created successfully", "data": order.dict()}, status_code=201)
