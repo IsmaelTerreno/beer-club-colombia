@@ -7,5 +7,6 @@ from model.Item import Item
 
 
 class Round(BaseModel):
+    id: int
     created: datetime
     items: List[Item]

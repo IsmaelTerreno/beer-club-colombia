@@ -8,6 +8,7 @@ from model.Round import Round
 
 
 class Order(BaseModel):
+    id: int
     created: datetime
     paid: bool
     subtotal: float
