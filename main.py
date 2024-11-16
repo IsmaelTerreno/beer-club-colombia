@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from model.Order import Order
-from service.order_service import create_order, update_order
+from service.order_service import create_order, update_order, get_order_by_id
 
 app = FastAPI()
 
@@ -21,3 +21,9 @@ async def create_order_endpoint(order: Order):
 async def update_order_endpoint(order_id: int, order: Order):
     updated_order = update_order(order_id, order)
     return {"message": "Order updated successfully", "data": updated_order.dict()}
+
+
+@app.get("/api/v1/order/{order_id}", status_code=200, summary="Find an existing order")
+async def find_order_endpoint(order_id: int):
+    order = get_order_by_id(order_id)
+    return {"message": "Order found", "data": order.dict()}
