@@ -1,4 +1,4 @@
-from model.Order import Order
+from model.Order import Order, StatusOrder
 from repository.order_repository import order_repository
 from service.stock_service import subtraction_stock, get_stock_by_name
 
@@ -22,9 +22,12 @@ def process_order(order: Order) -> Order:
             if stock is not None and stock.quantity >= currentItem.quantity:
                 # Subtract the stock
                 subtraction_stock(stock)
+                # Set the order status to COMPLETE
+                order.status = StatusOrder.COMPLETED
+                order.details = "Order processed successfully"
             else:
                 # If the stock is not available or the quantity is not enough, set the order status to FAILED
-                order.status = "FAILED"
+                order.status = StatusOrder.FAILED
                 order.details = "Out of stock"
                 # Update the order
                 order_repository.update_order(order)

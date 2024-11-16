@@ -4,6 +4,7 @@ import pytest
 from httpx import AsyncClient
 
 from main import app
+from model.Order import StatusOrder
 
 
 @pytest.mark.asyncio
@@ -103,6 +104,6 @@ def generate_order_payload(order_id: int):
                 ],
             }
         ],
-        "status": "pending",
+        "status": StatusOrder.PENDING,
         "details": "This is a test order.",
     }

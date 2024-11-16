@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from model.Order import Order
-from service.order_service import create_order, update_order, get_order_by_id, delete_order
+from model.Order import Order, StatusOrder
+from service.order_service import create_order, update_order, get_order_by_id, delete_order, process_order
 
 app = FastAPI()
 
@@ -41,3 +41,11 @@ async def delete_order_endpoint(order_id: int):
         if not is_deleted:
             return {"message": "Failed to delete order", "data": order}
         return {"message": "Order deleted", "data": order}
+
+
+@app.post("/api/v1/order/process", status_code=200, summary="Process an order")
+async def process_order_endpoint(order: Order):
+    order = process_order(order)
+    if order.status == StatusOrder.FAILED:
+        return {"message": "Order processing failed", "data": order.dict()}
+    return {"message": "Order processed successfully", "data": order.dict()}

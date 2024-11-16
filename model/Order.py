@@ -1,10 +1,17 @@
 from datetime import datetime
+from enum import Enum
 from typing import List
 
 from pydantic import BaseModel
 
 from model.Item import Item
 from model.Round import Round
+
+
+class StatusOrder(Enum):
+    FAILED = "FAILED"
+    PENDING = "PENDING"
+    COMPLETED = "COMPLETED"
 
 
 class Order(BaseModel):
