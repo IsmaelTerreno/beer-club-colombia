@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 
 from model.Order import Order
-from service.order_service import create_order, update_order, get_order_by_id
+from service.order_service import create_order, update_order, get_order_by_id, delete_order
 
 app = FastAPI()
 
 
-@app.get("/")
+@app.get("/", summary="Root endpoint for welcome message")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Beer Club Colombia API. Welcome to the club!. You can access the API documentation at /docs"}
 
 
 @app.post("/api/v1/order", status_code=201, summary="Create a new order")
@@ -17,7 +17,7 @@ async def create_order_endpoint(order: Order):
     return {"message": "Order created successfully", "data": order.dict()}
 
 
-@app.put("/api/v1/order/{order_id}", status_code=200, summary="Update an existing order")
+@app.put("/api/v1/order/{order_id}", status_code=204, summary="Update an existing order")
 async def update_order_endpoint(order_id: int, order: Order):
     updated_order = update_order(order_id, order)
     return {"message": "Order updated successfully", "data": updated_order.dict()}
@@ -26,4 +26,18 @@ async def update_order_endpoint(order_id: int, order: Order):
 @app.get("/api/v1/order/{order_id}", status_code=200, summary="Find an existing order")
 async def find_order_endpoint(order_id: int):
     order = get_order_by_id(order_id)
+    if order is None:
+        return {"message": "Order not found", "data": None}
     return {"message": "Order found", "data": order.dict()}
+
+
+@app.delete("/api/v1/order/{order_id}", status_code=202, summary="Delete an existing order")
+async def delete_order_endpoint(order_id: int):
+    order = get_order_by_id(order_id)
+    if order is None:
+        return {"message": "Order not found", "data": None}
+    else:
+        is_deleted = delete_order(order_id)
+        if not is_deleted:
+            return {"message": "Failed to delete order", "data": order}
+        return {"message": "Order deleted", "data": order}

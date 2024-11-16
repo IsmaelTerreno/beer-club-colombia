@@ -42,6 +42,35 @@ async def test_should_create_and_find_existing_order():
         }
 
 
+@pytest.mark.asyncio
+async def test_should_create_and_delete_existing_order():
+    async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
+        # Define the order payload id
+        id_to_test = 3
+        # Define the order payload
+        order_payload = generate_order_payload(id_to_test)
+
+        # Create the order
+        response = await ac.post("/api/v1/order", json=order_payload)
+        assert response.status_code == 201
+
+        # Delete the order
+        response = await ac.delete("/api/v1/order/{}".format(id_to_test))
+        assert response.status_code == 202
+        assert response.json() == {
+            "message": "Order deleted",
+            "data": order_payload,  # This should match the data format returned by `order.dict()`
+        }
+
+        # Find the order
+        response = await ac.get("/api/v1/order/{}".format(id_to_test))
+        assert response.status_code == 200
+        assert response.json() == {
+            "message": "Order not found",
+            "data": None,
+        }
+
+
 def generate_order_payload(order_id: int):
     return {
         "id": order_id,

@@ -35,3 +35,8 @@ def process_order(order: Order) -> Order:
 def update_order(order_id: int, order: Order) -> Order:
     order_repository.update_order(order)
     return order
+
+
+def delete_order(order_id: int) -> bool:
+    order_repository.delete_order(order_id)
+    return True
