@@ -21,11 +21,15 @@ def process_order(order: Order) -> Order:
             # If the stock is available and the quantity is enough, subtract the stock
             if stock is not None and stock.quantity >= currentItem.quantity:
                 # Subtract the stock
-                subtraction_stock(stock)
-                # Set the order status to COMPLETE
-                order.status = StatusOrder.COMPLETED
-                order.details = "Order processed successfully"
-                order.paid = True
+                is_taken = subtraction_stock(currentItem.id_item, currentItem.quantity)
+                if is_taken:
+                    # Add the processed item to the order
+                    order.processed_items.append(currentItem)
+                else:
+                    # If the stock is not available, set the order status to FAILED
+                    order.status = StatusOrder.FAILED
+                    order.details = "Out of stock"
+                    order.paid = False
             else:
                 # If the stock is not available or the quantity is not enough, set the order status to FAILED
                 order.status = StatusOrder.FAILED
