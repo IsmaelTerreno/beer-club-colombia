@@ -15,12 +15,12 @@ class ItemSubtotal(BaseModel):
     :ivar quantity: Quantity of the item.
     :type quantity: int
     :ivar price_per_unit: Price per unit of the item.
-    :type price_per_unit: str
+    :type price_per_unit: int
     :ivar sub_total: Calculated subtotal for the item (quantity * price per unit).
     :type sub_total: int
     """
     id: int
     id_item: int
     quantity: int
-    price_per_unit: str
+    price_per_unit: int
     sub_total: int
