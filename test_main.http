@@ -5,7 +5,51 @@ Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/hello/User
-Accept: application/json
+POST http://127.0.0.1:8000/api/v1/order
+Content-Type: application/json
 
-###
+{
+  "id": 1,
+  "created": "2023-10-05T15:26:48.123456",
+  "paid": false,
+  "subtotal": 100.0,
+  "taxes": 20.0,
+  "discounts": 5.0,
+  "items": [
+    {
+      "id": 1,
+      "name": "Item 1",
+      "price_per_unit": 25,
+      "total": 50
+    },
+    {
+      "id": 2,
+      "name": "Item 2",
+      "price_per_unit": 25,
+      "total": 50
+    }
+  ],
+  "rounds": [
+    {
+      "id": 1,
+      "created": "2023-10-05T15:26:48.123456",
+      "items": [
+        {
+          "id": 1,
+          "name": "Item 1",
+          "price_per_unit": 25,
+          "total": 50
+        },
+        {
+          "id": 2,
+          "name": "Item 2",
+          "price_per_unit": 25,
+          "total": 50
+        }
+      ]
+    }
+  ],
+  "status": "pending",
+  "details": "This is a test order."
+}
+
