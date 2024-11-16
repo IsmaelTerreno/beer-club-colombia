@@ -104,6 +104,6 @@ def generate_order_payload(order_id: int):
                 ],
             }
         ],
-        "status": StatusOrder.PENDING,
+        "status": str(StatusOrder.PENDING),
         "details": "This is a test order.",
     }
