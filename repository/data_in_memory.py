@@ -18,7 +18,7 @@ stock_inventory_in_memory_store = Stock(
             id=2,
             name="Quilmes",
             price=120,
-            quantity=0
+            quantity=3
         ),
         Beer(
             id=3,

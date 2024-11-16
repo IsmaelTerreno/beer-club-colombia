@@ -4,6 +4,7 @@ from typing import List
 from pydantic import BaseModel
 
 from model.Item import Item
+from model.ItemSubtotal import ItemSubtotal
 
 
 class ItemsRequestRound(BaseModel):
@@ -23,4 +24,4 @@ class ItemsRequestRound(BaseModel):
     """
     id: int
     created: datetime
-    selected_items: List[Item]
+    selected_items: List[ItemSubtotal]

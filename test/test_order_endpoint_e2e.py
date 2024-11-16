@@ -136,4 +136,5 @@ def generate_order_payload(order_id: int):
         ],
         "status": str(StatusOrder.PENDING),
         "details": "This is a test order.",
+        "processed_items": []
     }
