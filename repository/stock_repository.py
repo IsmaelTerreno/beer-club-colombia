@@ -11,8 +11,8 @@ class StockRepository:
     def save_stock(self, stock):
         self.inventory = stock
 
-    def get_stock_by_name(self, name):
-        return next((beer for beer in self.inventory.beers if beer.name == name), None)
+    def get_stock_by_id(self, id_item):
+        return next((beer for beer in self.inventory.beers if beer.id == id_item), None)
 
 
 # Initialize a single instance of StockRepository
