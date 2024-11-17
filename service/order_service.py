@@ -19,6 +19,9 @@ def create_order(order: Order) -> Order:
     :return: The created order with updated information from the repository
     :rtype: Order
     """
+    # Check if the order id already exists
+    if order_repository.get_order_by_id(order.id):
+        raise ValueError(f"Order with ID {order.id} already exists")
     return order_repository.create_order(order)
 
 
