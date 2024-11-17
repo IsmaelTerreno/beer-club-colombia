@@ -1,4 +1,4 @@
-# Project Name
+# Beer Club Colombia API
 
 ## Overview
 
