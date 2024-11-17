@@ -87,10 +87,14 @@ async def test_should_create_and_process_order():
         # Process the order
         response = await ac.post("/api/v1/order/process", json=order_payload)
         assert response.status_code == 200
-        assert response.json() == {
-            "message": "Order processed successfully",
-            "data": order_payload,
-        }
+        # Check the status of the order completed
+        assert response.json()["data"]["status"] == str(StatusOrder.COMPLETED.value)
+        # Check the total to pay
+        assert response.json()["data"]["total_to_pay"] == 480.0
+        # Check the cash returned
+        assert response.json()["data"]["cash_returned"] == 1520.0
+        # Check the order paid status
+        assert response.json()["data"]["paid"] is True
 
 
 def generate_order_payload(order_id: int):
@@ -102,7 +106,7 @@ def generate_order_payload(order_id: int):
         "taxes": 20.0,
         "discounts": 5.0,
         "total_to_pay": 0.0,
-        "cash_tendered": 200.0,
+        "cash_tendered": 2000.0,
         "cash_returned": 0.0,
         "option_items": [
             {
@@ -122,7 +126,7 @@ def generate_order_payload(order_id: int):
                     {
                         "id": 1,
                         "id_item": 1,
-                        "quantity": 2890,
+                        "quantity": 3,
                         "price_per_unit": 0,
                         "sub_total": 0,
                     },
