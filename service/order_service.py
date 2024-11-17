@@ -8,14 +8,51 @@ from service.stock_service import subtraction_stock, get_stock_by_id
 
 
 def create_order(order: Order) -> Order:
+    """
+    Creates a new order using the provided order details.
+
+    This function takes an Order object as input, processes it, and stores it using
+    the order repository. The created order is then returned.
+
+    :param order: Order object containing the details of the order to be created
+    :type order: Order
+    :return: The created order with updated information from the repository
+    :rtype: Order
+    """
     return order_repository.create_order(order)
 
 
 def get_order_by_id(order_id: int) -> Order:
+    """
+    Fetch the order details for a given order ID.
+
+    This function retrieves the order information from the order repository
+    based on the provided order ID.
+
+    :param int order_id: The unique identifier for the order
+    :return: The order details associated with the specified order ID
+    :rtype: Order
+    """
     return order_repository.get_order_by_id(order_id)
 
 
 def process_order(order: Order) -> Order:
+    """
+    Process an order by checking stock availability and calculating the final payment details.
+
+    Detailed processing includes:
+    - Checking stock availability for each item in the order
+    - Subtracting stock quantities if available
+    - Calculating the price per unit and subtotal for each item
+    - Summing up the total payment including taxes and discounts
+    - Calculating the cash returned to the customer
+    - Updating the order status based on the availability of stock and sufficient cash
+
+    :param order: Order object containing the details to be processed
+    :type order: Order
+    :return: Updated Order object with processing details and status
+    :rtype: Order
+    """
     is_all_rounds_processed_by_stock = True
     order_in_progress = copy.deepcopy(order)
     result_details = ""
@@ -68,15 +105,48 @@ def process_order(order: Order) -> Order:
 
 
 def get_error_message_item(current_item: ItemSubtotal, current_round: ItemsRequestRound):
+    """
+    Generates an error message indicating failure to process an order due to insufficient stock
+    of a specific item in a specific round.
+
+    :param current_item: The item subtotal object which includes details about the item and its
+                         stock information.
+    :param current_round: The items request round object that includes the round details for
+                          item requests.
+
+    :return: A formatted error message string.
+    :rtype: str
+    """
     return "Order failed to process due to insufficient stock of item with id: " + str(
         current_item.id_item) + " in round with id: " + str(current_round.id)
 
 
 def update_order(order_id: int, order: Order) -> Order:
+    """
+    Updates an existing order in the order repository.
+
+    This function takes an order ID and an order object, updates the order in the
+    repository, and returns the updated order object.
+
+    :param order_id: The unique identifier for the order to be updated.
+    :type order_id: int
+    :param order: The order object containing updated information.
+    :type order: Order
+    :return: The updated order object.
+    :rtype: Order
+    """
     order_repository.update_order(order)
     return order
 
 
 def delete_order(order_id: int) -> bool:
+    """
+    Deletes an order from the repository based on the provided order ID.
+
+    :param order_id: The ID of the order to be deleted.
+    :type order_id: int
+    :return: A boolean indicating whether the order was successfully deleted.
+    :rtype: bool
+    """
     order_repository.delete_order(order_id)
     return True
