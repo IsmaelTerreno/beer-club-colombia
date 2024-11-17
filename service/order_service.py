@@ -80,10 +80,13 @@ def process_order(order: Order) -> Order:
                     # If the stock is not taken for any item in the list, set the order status to FAILED
                     is_all_rounds_processed_by_stock = False
                     result_details = get_error_message_item(currentItem, currentRound)
+                    order_in_progress.status = StatusOrder.FAILED
             else:
                 # If the stock is not available, set the order status to FAILED
                 is_all_rounds_processed_by_stock = False
                 result_details = get_error_message_item(currentItem, currentRound)
+                order_in_progress.status = StatusOrder.FAILED
+                order_in_progress.cash_returned = order_in_progress.cash_tendered
     if is_all_rounds_processed_by_stock:
         # Calculate the total to pay from processed items including taxes and discounts
         order_in_progress.total_to_pay = (sum([item.sub_total for item in
