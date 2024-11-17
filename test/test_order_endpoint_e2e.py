@@ -101,7 +101,9 @@ def generate_order_payload(order_id: int):
         "subtotal": 100.0,
         "taxes": 20.0,
         "discounts": 5.0,
+        "total_to_pay": 0.0,
         "cash_tendered": 200.0,
+        "cash_returned": 0.0,
         "option_items": [
             {
                 "id_item": 1,
@@ -120,7 +122,7 @@ def generate_order_payload(order_id: int):
                     {
                         "id": 1,
                         "id_item": 1,
-                        "quantity": 2,
+                        "quantity": 2890,
                         "price_per_unit": 0,
                         "sub_total": 0,
                     },
