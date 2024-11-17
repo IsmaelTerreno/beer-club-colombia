@@ -159,6 +159,17 @@ async def test_should_create_and_process_order_with_failure_due_to_insufficient_
                    "details"] == "Order failed to process due to insufficient stock of item with id: 1 in round with id: 1"
 
 
+@pytest.mark.asyncio
+async def test_should_get_current_stock():
+    async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
+        response = await ac.get("/api/v1/stock/current")
+        assert response.status_code == 200
+        # Check the message
+        assert response.json()["message"] == "Stock found"
+        # Check the data is not None
+        assert response.json()["data"] is not None
+
+
 def generate_order_payload(order_id: int):
     return {
         "id": order_id,

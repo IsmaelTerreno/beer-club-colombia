@@ -15,7 +15,7 @@ def subtraction_stock(beer_id: int, quantity: int) -> bool:
     :return: True if the stock was successfully decreased, False otherwise.
     :rtype: bool
     """
-    stock = stock_repository.get_stock_by_id(beer_id)
+    stock = stock_repository.get_beer_by_id(beer_id)
     if stock is not None and stock.quantity >= quantity:
         stock.quantity -= quantity
         return True
@@ -33,7 +33,7 @@ def addition_stock(beer_id: int, quantity: int) -> bool:
     :return: Whether the stock was successfully updated.
     :rtype: bool
     """
-    stock = stock_repository.get_stock_by_id(beer_id)
+    stock = stock_repository.get_beer_by_id(beer_id)
     if stock is not None:
         stock.quantity += quantity
         return True
@@ -49,4 +49,17 @@ def get_stock_by_id(stock_id: int) -> Stock:
     :return: The stock object corresponding to the given stock_id.
     :rtype: Stock
     """
-    return stock_repository.get_stock_by_id(stock_id)
+    return stock_repository.get_beer_by_id(stock_id)
+
+
+def get_stock() -> Stock:
+    """
+    Retrieve a stock object from the stock repository.
+
+    This function calls the stock repository to fetch and return a Stock
+    object containing the current stock details.
+
+    :return: A Stock object with the current stock information.
+    :rtype: Stock
+    """
+    return stock_repository.get_stock()

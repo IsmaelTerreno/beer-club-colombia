@@ -21,7 +21,7 @@ class StockRepository:
     def save_stock(self, stock):
         self.inventory = stock
 
-    def get_stock_by_id(self, id_item):
+    def get_beer_by_id(self, id_item):
         return next((beer for beer in self.inventory.beers if beer.id == id_item), None)
 
 
