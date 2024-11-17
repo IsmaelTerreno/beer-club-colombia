@@ -89,7 +89,8 @@ def process_order(order: Order) -> Order:
         order_in_progress.total_to_pay = (sum([item.sub_total for item in
                                                order_in_progress.processed_items]) + order_in_progress.taxes) - order_in_progress.discounts
         # Calculate the cash returned to the customer
-        order_in_progress.cash_returned = order_in_progress.cash_tendered - order_in_progress.total_to_pay
+        cash_returned = order_in_progress.cash_tendered - order_in_progress.total_to_pay
+        order_in_progress.cash_returned = 0.0 if cash_returned < 0 else cash_returned
         # Set the order as paid if the cash tendered is greater than the total to pay
         is_paid = order_in_progress.cash_tendered >= order_in_progress.total_to_pay
         # Set the order paid status

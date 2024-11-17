@@ -73,7 +73,7 @@ async def test_should_create_and_delete_existing_order():
 
 
 @pytest.mark.asyncio
-async def test_should_create_and_process_order():
+async def test_should_create_and_process_order_with_success():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
         # Define the order payload id
         id_to_test = 4
@@ -97,6 +97,35 @@ async def test_should_create_and_process_order():
         assert response.json()["data"]["paid"] is True
         # Check the details message
         assert response.json()["data"]["details"] == "Order processed successfully"
+
+
+@pytest.mark.asyncio
+async def test_should_create_and_process_order_with_failure_due_to_insufficient_funds():
+    async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
+        # Define the order payload id
+        id_to_test = 5
+        # Define the order payload
+        order_payload = generate_order_payload(id_to_test)
+        # Set the cash tendered to 0.0
+        order_payload["cash_tendered"] = 0.0
+
+        # Create the order
+        response = await ac.post("/api/v1/order", json=order_payload)
+        assert response.status_code == 201
+
+        # Process the order
+        response = await ac.post("/api/v1/order/process", json=order_payload)
+        assert response.status_code == 200
+        # Check the status of the order failed
+        assert response.json()["data"]["status"] == str(StatusOrder.FAILED.value)
+        # Check the total to pay
+        assert response.json()["data"]["total_to_pay"] == 480.0
+        # Check the cash returned
+        assert response.json()["data"]["cash_returned"] == 0.0
+        # Check the order paid status
+        assert response.json()["data"]["paid"] is False
+        # Check the details message
+        assert response.json()["data"]["details"] == "Order failed to process due to insufficient cash"
 
 
 def generate_order_payload(order_id: int):
