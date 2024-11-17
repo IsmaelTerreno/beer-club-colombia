@@ -44,7 +44,7 @@ link: [API Documentation](http://localhost:8000/docs)
 
 ### Running the Application
 
-To start the application, run the following command for FastAPI framework:
+To start the application, run the following command for [FastAPI framework](https://fastapi.tiangolo.com):
 
 ```sh
 uvicorn main:app --reload
