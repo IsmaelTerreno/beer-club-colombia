@@ -12,12 +12,12 @@ class Beer(BaseModel):
     :type id: int
     :ivar name: The name of the beer.
     :type name: str
-    :ivar price: The price of the beer.
-    :type price: int
+    :ivar price_per_unit: The price of the beer.
+    :type price_per_unit: int
     :ivar quantity: The quantity of the beer in stock.
     :type quantity: int
     """
     id: int
     name: str
-    price: int
+    price_per_unit: int
     quantity: int

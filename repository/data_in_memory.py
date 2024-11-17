@@ -11,19 +11,19 @@ stock_inventory_in_memory_store = Stock(
         Beer(
             id=1,
             name="Corona",
-            price=115,
+            price_per_unit=115,
             quantity=12
         ),
         Beer(
             id=2,
             name="Quilmes",
-            price=120,
+            price_per_unit=120,
             quantity=31
         ),
         Beer(
             id=3,
             name="Club Colombia",
-            price=110,
+            price_per_unit=110,
             quantity=35
         )
     ],
