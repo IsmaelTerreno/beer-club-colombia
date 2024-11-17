@@ -10,6 +10,21 @@ from model.ItemsRequestRound import ItemsRequestRound
 
 
 class StatusOrder(Enum):
+    """
+    Represents the various statuses an order can have.
+
+    This enumeration is used to define the possible states of an order,
+    which can be FAILED, PENDING, or COMPLETED. It serves the purpose
+    of providing a clear and standardized way to check and set the state
+    of an order within the system.
+
+    :ivar FAILED: Indicates that the order has failed.
+    :type FAILED: str
+    :ivar PENDING: Indicates that the order is pending.
+    :type PENDING: str
+    :ivar COMPLETED: Indicates that the order is completed.
+    :type COMPLETED: str
+    """
     FAILED = "FAILED"
     PENDING = "PENDING"
     COMPLETED = "COMPLETED"
