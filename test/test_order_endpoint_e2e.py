@@ -95,6 +95,8 @@ async def test_should_create_and_process_order():
         assert response.json()["data"]["cash_returned"] == 1520.0
         # Check the order paid status
         assert response.json()["data"]["paid"] is True
+        # Check the details message
+        assert response.json()["data"]["details"] == "Order processed successfully"
 
 
 def generate_order_payload(order_id: int):
