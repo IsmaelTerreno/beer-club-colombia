@@ -11,8 +11,16 @@ from model.Order import StatusOrder
 @pytest.mark.asyncio
 async def test_should_create_order():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
+        # Get current stock information
+        response = await ac.get("/api/v1/stock/current")
+        assert response.status_code == 200
+        # Get the current stock available
+        current_stock = response.json()["data"]
+        # Get the beers available
+        beers = current_stock["beers"]
+
         # Define the order payload
-        order_payload = generate_order_payload(str(uuid.uuid4()))
+        order_payload = generate_order_payload(str(uuid.uuid4()), beers)
         # Create the order
         response = await ac.post("/api/v1/order", json=order_payload)
         # Assert the response with the expected values
@@ -26,10 +34,18 @@ async def test_should_create_order():
 @pytest.mark.asyncio
 async def test_should_create_and_find_existing_order():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
+        # Get current stock information
+        response = await ac.get("/api/v1/stock/current")
+        assert response.status_code == 200
+        # Get the current stock available
+        current_stock = response.json()["data"]
+        # Get the beers available
+        beers = current_stock["beers"]
+
         # Define the order payload id
         id_to_test = str(uuid.uuid4())
         # Define the order payload
-        order_payload = generate_order_payload(id_to_test)
+        order_payload = generate_order_payload(id_to_test, beers)
 
         # Create the order
         response = await ac.post("/api/v1/order", json=order_payload)
@@ -47,10 +63,18 @@ async def test_should_create_and_find_existing_order():
 @pytest.mark.asyncio
 async def test_should_create_and_delete_existing_order():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
+        # Get current stock information
+        response = await ac.get("/api/v1/stock/current")
+        assert response.status_code == 200
+        # Get the current stock available
+        current_stock = response.json()["data"]
+        # Get the beers available
+        beers = current_stock["beers"]
+
         # Define the order payload id
         id_to_test = str(uuid.uuid4())
         # Define the order payload
-        order_payload = generate_order_payload(id_to_test)
+        order_payload = generate_order_payload(id_to_test, beers)
 
         # Create the order
         response = await ac.post("/api/v1/order", json=order_payload)
