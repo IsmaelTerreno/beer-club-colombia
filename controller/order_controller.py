@@ -25,7 +25,7 @@ async def create_order_endpoint(order: Order):
 
 
 @router.put("/api/v1/order/{order_id}", status_code=204, summary="Update an existing order")
-async def update_order_endpoint(order_id: int, order: Order):
+async def update_order_endpoint(order_id: str, order: Order):
     """
     Update an existing order with given order details.
 
@@ -38,7 +38,7 @@ async def update_order_endpoint(order_id: int, order: Order):
 
 
 @router.get("/api/v1/order/{order_id}", status_code=200, summary="Find an existing order")
-async def find_order_endpoint(order_id: int):
+async def find_order_endpoint(order_id: str):
     """
     Find an existing order by its unique identifier.
 
@@ -59,7 +59,7 @@ async def find_order_endpoint(order_id: int):
 
 
 @router.delete("/api/v1/order/{order_id}", status_code=202, summary="Delete an existing order")
-async def delete_order_endpoint(order_id: int):
+async def delete_order_endpoint(order_id: str):
     """
     Delete an existing order.
 

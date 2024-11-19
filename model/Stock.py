@@ -15,12 +15,12 @@ class Stock(BaseModel):
     stock.
 
     :ivar id: Unique identifier for the stock.
-    :type id: int
+    :type id: str
     :ivar last_updated: Timestamp of the last update to the stock.
     :type last_updated: datetime
     :ivar beers: List of beers associated with the stock.
     :type beers: List[Beer]
     """
-    id: int
+    id: str
     last_updated: datetime
     beers: List[Beer]

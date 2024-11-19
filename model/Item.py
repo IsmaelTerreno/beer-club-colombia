@@ -10,5 +10,5 @@ class Item(BaseModel):
     :ivar id_item: Unique identifier for the item.
     :ivar name: Name of the item.
     """
-    id_item: int
+    id_item: str
     name: str

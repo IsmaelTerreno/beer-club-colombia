@@ -9,7 +9,7 @@ class ItemSubtotal(BaseModel):
     quantity, price per unit, and the calculated subtotal.
 
     :ivar id: Unique identifier for the item subtotal.
-    :type id: int
+    :type id: str
     :ivar id_item: Unique identifier for the item.
     :type id_item: int
     :ivar quantity: Quantity of the item.
@@ -19,8 +19,8 @@ class ItemSubtotal(BaseModel):
     :ivar sub_total: Calculated subtotal for the item (quantity * price per unit).
     :type sub_total: int
     """
-    id: int
-    id_item: int
+    id: str
+    id_item: str
     quantity: int
     price_per_unit: int
     sub_total: int

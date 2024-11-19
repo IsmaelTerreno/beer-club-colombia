@@ -1,4 +1,5 @@
 # test_order_endpoint_e2e.py
+import uuid
 
 import pytest
 from httpx import AsyncClient
@@ -11,7 +12,7 @@ from model.Order import StatusOrder
 async def test_should_create_order():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
         # Define the order payload
-        order_payload = generate_order_payload(1)
+        order_payload = generate_order_payload(str(uuid.uuid4()))
         # Create the order
         response = await ac.post("/api/v1/order", json=order_payload)
         # Assert the response with the expected values
@@ -26,7 +27,7 @@ async def test_should_create_order():
 async def test_should_create_and_find_existing_order():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
         # Define the order payload id
-        id_to_test = 2
+        id_to_test = str(uuid.uuid4())
         # Define the order payload
         order_payload = generate_order_payload(id_to_test)
 
@@ -47,7 +48,7 @@ async def test_should_create_and_find_existing_order():
 async def test_should_create_and_delete_existing_order():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
         # Define the order payload id
-        id_to_test = 3
+        id_to_test = str(uuid.uuid4())
         # Define the order payload
         order_payload = generate_order_payload(id_to_test)
 
@@ -76,7 +77,7 @@ async def test_should_create_and_delete_existing_order():
 async def test_should_create_and_process_order_with_success():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
         # Define the order payload id
-        id_to_test = 4
+        id_to_test = str(uuid.uuid4())
         # Define the order payload
         order_payload = generate_order_payload(id_to_test)
 
@@ -103,7 +104,7 @@ async def test_should_create_and_process_order_with_success():
 async def test_should_create_and_process_order_with_failure_due_to_insufficient_funds():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
         # Define the order payload id
-        id_to_test = 5
+        id_to_test = str(uuid.uuid4())
         # Define the order payload
         order_payload = generate_order_payload(id_to_test)
         # Set the cash tendered to 0.0
@@ -132,7 +133,7 @@ async def test_should_create_and_process_order_with_failure_due_to_insufficient_
 async def test_should_create_and_process_order_with_failure_due_to_insufficient_stock_of_item():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
         # Define the order payload id
-        id_to_test = 6
+        id_to_test = str(uuid.uuid4())
         # Define the order payload
         order_payload = generate_order_payload(id_to_test)
         # Set the quantity of the item to 10000
@@ -170,7 +171,9 @@ async def test_should_get_current_stock():
         assert response.json()["data"] is not None
 
 
-def generate_order_payload(order_id: int):
+def generate_order_payload(order_id: str):
+    beer_corona_id = str(uuid.uuid4())
+    beer_quilmes_id = str(uuid.uuid4())
     return {
         "id": order_id,
         "created": "2023-10-05T15:26:48.123456",
@@ -183,29 +186,29 @@ def generate_order_payload(order_id: int):
         "cash_returned": 0.0,
         "option_items": [
             {
-                "id_item": 1,
+                "id_item": beer_corona_id,
                 "name": "Corona",
             },
             {
-                "id_item": 2,
+                "id_item": beer_quilmes_id,
                 "name": "Quilmes",
             },
         ],
         "rounds": [
             {
-                "id": 1,
+                "id": str(uuid.uuid4()),
                 "created": "2023-10-05T15:26:48.123456",
                 "selected_items": [
                     {
-                        "id": 1,
-                        "id_item": 1,
+                        "id": str(uuid.uuid4()),
+                        "id_item": beer_corona_id,
                         "quantity": 3,
                         "price_per_unit": 0,
                         "sub_total": 0,
                     },
                     {
-                        "id": 2,
-                        "id_item": 2,
+                        "id": str(uuid.uuid4()),
+                        "id_item": beer_quilmes_id,
                         "quantity": 1,
                         "price_per_unit": 0,
                         "sub_total": 0,

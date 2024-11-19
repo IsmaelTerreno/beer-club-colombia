@@ -16,12 +16,12 @@ class ItemsRequestRound(BaseModel):
     selected items associated with this request.
 
     :ivar id: Unique identifier for the request round.
-    :type id: int
+    :type id: str
     :ivar created: Creation timestamp of the request round.
     :type created: datetime
     :ivar selected_items: List of items selected in this request round.
     :type selected_items: List[Item]
     """
-    id: int
+    id: str
     created: datetime
     selected_items: List[ItemSubtotal]

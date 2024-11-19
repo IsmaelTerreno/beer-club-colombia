@@ -38,7 +38,7 @@ class Order(BaseModel):
     including financial details, status, and processed items.
 
     :ivar id: Unique identifier for the order.
-    :type id: int
+    :type id: str
     :ivar created: Date and time when the order was created.
     :type created: datetime
     :ivar paid: Indicates whether the order has been paid.
@@ -66,7 +66,7 @@ class Order(BaseModel):
     :ivar processed_items: List of items that have been processed with subtotals.
     :type processed_items: List[ItemSubtotal]
     """
-    id: int
+    id: str
     created: datetime
     paid: bool
     subtotal: float

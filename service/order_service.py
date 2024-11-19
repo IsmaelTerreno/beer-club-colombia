@@ -25,7 +25,7 @@ def create_order(order: Order) -> Order:
     return order_repository.create_order(order)
 
 
-def get_order_by_id(order_id: int) -> Order:
+def get_order_by_id(order_id: str) -> Order:
     """
     Fetch the order details for a given order ID.
 
