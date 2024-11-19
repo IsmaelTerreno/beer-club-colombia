@@ -1,8 +1,0 @@
-version: '3.9'
-
-services:
-  beer-club-colombia-api:
-    build: .
-    container_name: beer-club-colombia-api
-    ports:
-      - "8000:8000"

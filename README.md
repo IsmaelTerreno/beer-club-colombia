@@ -49,3 +49,17 @@ To start the application, run the following command for [FastAPI framework](http
 ```sh
 uvicorn main:app --reload
 ```
+
+The application will be running on `http://localhost:8000`.
+
+### Running the Application with Docker
+
+Requirements:
+
+- Docker running on your machine
+
+To start the application with Docker, run the following command:
+
+```sh
+docker-compose up
+```
