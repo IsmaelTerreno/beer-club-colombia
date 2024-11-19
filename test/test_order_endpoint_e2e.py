@@ -76,10 +76,18 @@ async def test_should_create_and_delete_existing_order():
 @pytest.mark.asyncio
 async def test_should_create_and_process_order_with_success():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
+        # Get current stock information
+        response = await ac.get("/api/v1/stock/current")
+        assert response.status_code == 200
+        # Get the current stock available
+        current_stock = response.json()["data"]
+        # Get the beers available
+        beers = current_stock["beers"]
+
         # Define the order payload id
         id_to_test = str(uuid.uuid4())
         # Define the order payload
-        order_payload = generate_order_payload(id_to_test)
+        order_payload = generate_order_payload(id_to_test, beers)
 
         # Create the order
         response = await ac.post("/api/v1/order", json=order_payload)
@@ -103,10 +111,18 @@ async def test_should_create_and_process_order_with_success():
 @pytest.mark.asyncio
 async def test_should_create_and_process_order_with_failure_due_to_insufficient_funds():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
+        # Get current stock information
+        response = await ac.get("/api/v1/stock/current")
+        assert response.status_code == 200
+        # Get the current stock available
+        current_stock = response.json()["data"]
+        # Get the beers available
+        beers = current_stock["beers"]
+
         # Define the order payload id
         id_to_test = str(uuid.uuid4())
         # Define the order payload
-        order_payload = generate_order_payload(id_to_test)
+        order_payload = generate_order_payload(id_to_test, beers)
         # Set the cash tendered to 0.0
         order_payload["cash_tendered"] = 0.0
 
@@ -132,10 +148,18 @@ async def test_should_create_and_process_order_with_failure_due_to_insufficient_
 @pytest.mark.asyncio
 async def test_should_create_and_process_order_with_failure_due_to_insufficient_stock_of_item():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
+        # Get current stock information
+        response = await ac.get("/api/v1/stock/current")
+        assert response.status_code == 200
+        # Get the current stock available
+        current_stock = response.json()["data"]
+        # Get the beers available
+        beers = current_stock["beers"]
+
         # Define the order payload id
         id_to_test = str(uuid.uuid4())
         # Define the order payload
-        order_payload = generate_order_payload(id_to_test)
+        order_payload = generate_order_payload(id_to_test, beers)
         # Set the quantity of the item to 10000
         order_payload["rounds"][0]["selected_items"][0]["quantity"] = 10000
         # Set the tendered cash to 2000.0
@@ -155,9 +179,11 @@ async def test_should_create_and_process_order_with_failure_due_to_insufficient_
         assert response.json()["data"]["cash_returned"] == 2000.0
         # Check the order paid status
         assert response.json()["data"]["paid"] is False
-        # Check the details message
+        errorMessage = "Order failed to process due to insufficient stock of item with id: " + \
+                       current_stock["beers"][0]["id"] + " in round with id: " + order_payload["rounds"][0]["id"]
+        # Check the details message contains the error message
         assert response.json()["data"][
-                   "details"] == "Order failed to process due to insufficient stock of item with id: 1 in round with id: 1"
+                   "details"] == errorMessage
 
 
 @pytest.mark.asyncio
@@ -171,9 +197,7 @@ async def test_should_get_current_stock():
         assert response.json()["data"] is not None
 
 
-def generate_order_payload(order_id: str):
-    beer_corona_id = str(uuid.uuid4())
-    beer_quilmes_id = str(uuid.uuid4())
+def generate_order_payload(order_id: str, beers):
     return {
         "id": order_id,
         "created": "2023-10-05T15:26:48.123456",
@@ -186,12 +210,16 @@ def generate_order_payload(order_id: str):
         "cash_returned": 0.0,
         "option_items": [
             {
-                "id_item": beer_corona_id,
-                "name": "Corona",
+                "id_item": beers[0]["id"],
+                "name": beers[0]["name"],
             },
             {
-                "id_item": beer_quilmes_id,
-                "name": "Quilmes",
+                "id_item": beers[1]["id"],
+                "name": beers[1]["name"],
+            },
+            {
+                "id_item": beers[2]["id"],
+                "name": beers[2]["name"],
             },
         ],
         "rounds": [
@@ -201,14 +229,14 @@ def generate_order_payload(order_id: str):
                 "selected_items": [
                     {
                         "id": str(uuid.uuid4()),
-                        "id_item": beer_corona_id,
+                        "id_item": beers[0]["id"],
                         "quantity": 3,
                         "price_per_unit": 0,
                         "sub_total": 0,
                     },
                     {
                         "id": str(uuid.uuid4()),
-                        "id_item": beer_quilmes_id,
+                        "id_item": beers[1]["id"],
                         "quantity": 1,
                         "price_per_unit": 0,
                         "sub_total": 0,
